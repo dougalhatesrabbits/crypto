@@ -2,7 +2,9 @@ import base64
 import os
 from datetime import datetime, date, time, timedelta
 
+# This class provides both encryption and decryption facilities.
 from cryptography.fernet import Fernet, MultiFernet
+
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
@@ -11,6 +13,11 @@ from cryptography import x509
 from cryptography.x509.oid import NameOID
 from cryptography.hazmat.primitives import hashes
 
+'''
+Generates a fresh fernet key. Keep this some place safe! If you lose it you’ll no longer be able to decrypt messages; 
+if anyone else gains access to it, they’ll be able to decrypt all of your messages, and they’ll also be able forge 
+arbitrary messages that will be authenticated and decrypted.
+'''
 key = Fernet.generate_key()
 f = Fernet(key)
 token = f.encrypt(b"my deep dark secret")
@@ -19,6 +26,7 @@ b'...'
 f.decrypt(token)
 b'my deep dark secret'
 
+# -----------------------------
 key1 = Fernet(Fernet.generate_key())
 key2 = Fernet(Fernet.generate_key())
 f = MultiFernet([key1, key2])
