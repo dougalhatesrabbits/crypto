@@ -1,5 +1,3 @@
-
-
 from Crypto import Random  # use to generate a random byte string of a length we decide
 from Cryptodome.Cipher import AES
 from Cryptodome.Hash import SHA256
@@ -21,7 +19,6 @@ https://tutorialsoverflow.com/python-encryption-and-decryption/
 # so that we can remove the padding during our encryption process.
 """
 
-"""
 BS = 16
 
 
@@ -33,9 +30,8 @@ def pad(s):
 
 def unpad(s):
     return s[0:-s[-1]]
-"""
 
-"""
+
 class AESCipher:
 
     def __init__(self, key):
@@ -52,14 +48,13 @@ class AESCipher:
         iv = enc[:16]
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
         return unpad(cipher.decrypt(enc[16:]))
-"""
-"""
+
+
 cipher = AESCipher('mysecretpassword')
 encrypted = cipher.encrypt('Secret Message A')
 decrypted = cipher.decrypt(encrypted)
 print(encrypted)
 print(decrypted)
-"""
 
 
 # https://stackoverflow.com/questions/42568262/how-to-encrypt-text-with-a-password-in-python/44212550#44212550
@@ -107,36 +102,3 @@ decrypted = decrypt(my_password, encrypted)
 print("dec:  {}".format(decrypted))
 print("\ndata match: {}".format(my_data == decrypted))
 
-"""
-https://www.pycryptodome.org/en/latest/src/examples.html
-"""
-'''
-Encrypt data with AES
-
-The following code generates a new AES128 key and encrypts a piece of data into a file. 
-We use the EAX mode because it allows the receiver to detect any unauthorized modification (similarly, 
-we could have used other authenticated encryption modes like GCM, CCM or SIV).
-
-'''
-data = "hello"
-key = get_random_bytes(16)
-cipher = AES.new(key, AES.MODE_EAX)
-ciphertext, tag = cipher.encrypt_and_digest(data)
-
-file_out = open("encrypted.bin", "wb")
-[ file_out.write(x) for x in (cipher.nonce, tag, ciphertext) ]
-
-'''
-At the other end, the receiver can securely load the piece of data back (if they know the key!). 
-Note that the code generates a ValueError exception when tampering is detected.
-
-'''
-
-from Crypto.Cipher import AES
-
-file_in = open("encrypted.bin", "rb")
-nonce, tag, ciphertext = [ file_in.read(x) for x in (16, 16, -1) ]
-
-# let's assume that the key is somehow available again
-cipher = AES.new(key, AES.MODE_EAX, nonce)
-data = cipher.decrypt_and_verify(ciphertext, tag)
