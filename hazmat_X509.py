@@ -127,9 +127,11 @@ def generate_selfSignedCertificate():
     # Write our certificate out to disk.
     with open("/Users/david/Documents/PycharmProjects/crypto/certificate.pem", "wb") as f:
         f.write(cert.public_bytes(serialization.Encoding.PEM))
+    return cert
 
-def check_certificateKeyType():
-    public_key = cert.public_key()
+
+def check_certificateKeyType(cert_in, ec):
+    public_key = cert_in.public_key()
     if isinstance(public_key, rsa.RSAPublicKey):
         # Do something RSA specific
         print("rsa")
@@ -139,6 +141,8 @@ def check_certificateKeyType():
     else:
         # Remember to handle this case
         print("something else")
+
+
 
 """
 der_ocsp_req = b""
