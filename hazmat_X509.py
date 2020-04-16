@@ -15,6 +15,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.x509 import ocsp
 from cryptography.hazmat.primitives.hashes import SHA1
 from cryptography.x509 import load_pem_x509_certificate, ocsp
+from cryptography.hazmat.primitives.asymmetric import ec
 
 
 
